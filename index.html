@@ -16,7 +16,7 @@
   --soft:#6f6a5e;    /* серый текст */
   --gold:#b08d57;    /* золотой акцент */
   --sage:#e3e9dc;    /* светло-зелёный фон блоков */
-  --rose:#e9b8c0;    /* цвет лепестков */ 
+  --rose:#e9b8c0;    /* цвет лепестков */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -44,10 +44,11 @@ h2{font-weight:700;font-size:36px;line-height:1.2;margin:0 0 16px}
 /* --- Первый экран с именами --- */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;max-width:none}
 .pair{margin:6px 0}
-.nm{margin:0;font-weight:300;letter-spacing:.02em;font-size:clamp(58px,18vw,92px);line-height:1.05;text-shadow:0 1px 10px rgba(176,141,87,.18)}
-.multi .nm{font-size:clamp(46px,13.5vw,66px)}.nm{white-space:nowrap}
-#heroNames{position:relative;width:min(92%,430px);padding:64px 20px 44px;border:1px solid var(--gold);border-radius:230px 230px 28px 28px;outline:1px solid rgba(176,141,87,.35);outline-offset:9px;background:rgba(255,255,255,.45)}
-.orn{font-size:30px;margin:10px 0;animation:beat 2.4s infinite}
+.nm{margin:0;font-weight:400;letter-spacing:.03em;font-size:clamp(60px,19vw,96px);line-height:1.08;filter:drop-shadow(0 2px 6px rgba(120,90,40,.22))}
+.nm .ch{background:linear-gradient(120deg,#8a6a2e 0%,#d9b970 40%,#9a7633 70%,#c9a45c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .02em}
+.multi .nm{font-size:clamp(50px,15vw,74px)}.nm{white-space:nowrap}
+#heroNames{position:relative;width:min(94%,440px);padding:10px 0 20px}
+.orn{display:flex;align-items:center;gap:10px;width:150px;margin:18px auto}.orn::before,.orn::after{content:"";flex:1;height:1px;background:var(--gold)}.orn i{width:8px;height:8px;background:var(--gold);transform:rotate(45deg)}
 .hero::before{content:"";position:absolute;width:520px;height:520px;max-width:120vw;border-radius:50%;background:radial-gradient(circle,rgba(233,184,192,.35),transparent 65%);animation:glow 5s ease-in-out infinite;z-index:-1}
 @keyframes glow{50%{transform:scale(1.18);opacity:.6}}
 .hero{position:relative;overflow:hidden;padding-top:120px;padding-bottom:90px}
@@ -57,7 +58,7 @@ h2{font-weight:700;font-size:36px;line-height:1.2;margin:0 0 16px}
 .branch.l{left:-8px}.branch.r{right:-8px;transform:scaleX(-1);animation-name:swayr}
 @keyframes sway{50%{transform:rotate(4deg)}}
 @keyframes swayr{0%,100%{transform:scaleX(-1) rotate(0)}50%{transform:scaleX(-1) rotate(4deg)}}
-.big{font-weight:300;letter-spacing:.02em;font-size:clamp(48px,14vw,66px);line-height:1.15;margin:4px 0}
+.big{font-weight:400;letter-spacing:.02em;font-size:clamp(48px,14vw,66px);line-height:1.15;margin:4px 0}
 .prog{max-width:420px;margin:26px auto 0;text-align:left;position:relative;padding-left:26px;border-left:2px solid var(--gold)}
 .prog div{position:relative;margin-bottom:22px}
 .prog div::before{content:"";position:absolute;left:-35px;top:12px;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(176,141,87,.25)}
@@ -94,7 +95,15 @@ input,select{font:inherit;font-size:24px;width:100%;padding:13px 16px;margin:6px
 @keyframes flip{from{transform:rotateX(90deg);opacity:0}}
 .timer small{color:var(--soft);font-size:20px}
 
-#mbtn{position:fixed;right:12px;bottom:12px;z-index:20;width:48px;height:48px;border-radius:50%;padding:0;background:#fff;font-size:20px}
+.rings{width:150px;margin:0 auto 6px;display:block;overflow:visible}
+.rings circle{fill:none;stroke:var(--gold);stroke-width:2.6;stroke-dasharray:140;stroke-dashoffset:140;transition:stroke-dashoffset 2.6s ease .3s}
+.rings circle+circle{transition-delay:1s}
+.in .rings circle{stroke-dashoffset:0}
+.rings .gem{fill:#f3e3b8;stroke:var(--gold);stroke-width:1.5;opacity:0;transition:opacity 1s 3s;transform-origin:46px 12px}
+.in .rings .gem{opacity:1;animation:gem 2.4s 3.5s infinite}
+@keyframes gem{50%{transform:scale(1.35);filter:drop-shadow(0 0 6px #e8c76d)}}
+#mbtn,#sbtn{position:fixed;right:12px;bottom:12px;z-index:20;width:48px;height:48px;border-radius:50%;padding:0;background:#fff;font-size:22px;line-height:1}
+#sbtn{bottom:68px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ch,.rv,.hero .amp,.hero .sub{opacity:1!important;transform:none!important}}
 </style>
 </head>
@@ -106,7 +115,7 @@ input,select{font:inherit;font-size:24px;width:100%;padding:13px 16px;margin:6px
      из блока НАСТРОЙКИ ниже в <script>.
      ====================================================================== -->
 <canvas id="petals"></canvas>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="brSvg" fill="none" stroke="#b08d57" stroke-width="1.6" stroke-linecap="round"><path d="M10 0 C30 60 40 120 90 215"/><path d="M26 44 C48 34 62 40 70 56 C50 62 36 56 26 44Z" fill="#dfe8d4"/><path d="M38 86 C62 74 80 80 90 98 C66 106 48 100 38 86Z" fill="#dfe8d4"/><path d="M58 130 C82 116 102 122 112 142 C86 150 68 144 58 130Z" fill="#dfe8d4"/><path d="M22 24 C8 36 10 54 24 62 C36 50 34 34 22 24Z" fill="#e9b8c0"/><circle cx="84" cy="188" r="8" fill="#e9b8c0"/><circle cx="104" cy="168" r="6" fill="#e9b8c0"/></g></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="brSvg" fill="none" stroke="#b08d57" stroke-width="1.6" stroke-linecap="round"><path d="M10 0 C30 60 40 120 90 215"/><path d="M26 44 C48 34 62 40 70 56 C50 62 36 56 26 44Z" fill="#dfe8d4"/><path d="M38 86 C62 74 80 80 90 98 C66 106 48 100 38 86Z" fill="#dfe8d4"/><path d="M58 130 C82 116 102 122 112 142 C86 150 68 144 58 130Z" fill="#dfe8d4"/><path d="M22 24 C8 36 10 54 24 62 C36 50 34 34 22 24Z" fill="#efe6cf"/><circle cx="84" cy="188" r="8" fill="#efe6cf"/><circle cx="104" cy="168" r="6" fill="#efe6cf"/></g></defs></svg>
 
 <div id="envelope">
   <div>
@@ -118,17 +127,19 @@ input,select{font:inherit;font-size:24px;width:100%;padding:13px 16px;margin:6px
 </div>
 
 <button class="btn" id="mbtn" aria-label="Музыка">♪</button>
+<button class="btn" id="sbtn" aria-label="Автопрокрутка">⇣</button>
 
 <section class="hero">
   <svg class="branch l" viewBox="0 0 150 220" aria-hidden="true"><use href="#brSvg"/></svg>
   <svg class="branch r" viewBox="0 0 150 220" aria-hidden="true"><use href="#brSvg"/></svg>
-  <div class="script" style="font-size:38px" id="kicker"></div>
+  <div class="script" style="font-size:38px;margin-bottom:26px" id="kicker"></div>
   <div id="heroNames"></div>
   <p class="sub" id="dateShort"></p>
   <div class="scrollhint">өйдө сүрүңүз ↓</div>
 </section>
 
 <section class="rv">
+  <svg class="rings" viewBox="0 0 120 56" aria-hidden="true"><circle cx="46" cy="34" r="22"/><circle cx="74" cy="34" r="22"/><path class="gem" d="M46 2 L52 8 L46 14 L40 8Z"/></svg>
   <p id="greet"></p>
   <div class="line"></div>
   <div id="namesBlock"></div>
@@ -230,7 +241,15 @@ const CONFIG = {
      "" = встроенная нежная мелодия (создаётся самой страницей).
      Если хотите свою песню: положите mp3 рядом с файлом и впишите
      название, например "song.mp3"                                          */
-  musicFile: "John_Legend_-_All_of_Me_47924445.mp3"
+  musicFile: "John_Legend_-_All_of_Me_47924445.mp3",
+
+  /* --- Автопрокрутка (страница сама медленно листается вниз) ---
+     autoScroll: true = включена, false = выключена
+     scrollSpeed: скорость, пикселей в секунду. Меньше число = медленнее.
+       20 = очень медленно, 30 = спокойно, 60 = быстрее.
+     Гость может остановить её, просто коснувшись экрана.             */
+  autoScroll: true,
+  scrollSpeed: 30
 };
 
 
@@ -270,7 +289,7 @@ function fill(){
     return h;
   };
   c.couples.forEach((p, i) => {
-    if (i) hn.insertAdjacentHTML("beforeend", '<div class="orn script">♥</div>');
+    if (i) hn.insertAdjacentHTML("beforeend", '<div class="orn"><i></i></div>');
     const box = document.createElement("div"); box.className = "pair";
     box.append(word(p.groom)); box.insertAdjacentHTML("beforeend", '<div class="amp script">&amp;</div>'); box.append(word(p.bride));
     hn.append(box); delay += 0.3;
@@ -279,7 +298,7 @@ function fill(){
   // программа
   $("prog").innerHTML = c.program.map(x => "<div><b>" + x.time + "</b>" + x.title + "</div>").join("");
   // украшения: цветочные разделители и мерцающие звёзды
-  const FL = '<svg viewBox="0 0 220 26"><g stroke="#b08d57" fill="none" stroke-width="1.2" stroke-linecap="round"><path d="M6 13H88M132 13H214"/><path d="M96 13c6-9 12-9 14 0 2-9 8-9 14 0-6 9-12 9-14 0-2 9-8 9-14 0z" fill="#e9b8c0" stroke="#b08d57"/></g><circle cx="92" cy="13" r="2" fill="#b08d57"/><circle cx="128" cy="13" r="2" fill="#b08d57"/></svg>';
+  const FL = '<svg viewBox="0 0 220 26"><g stroke="#b08d57" fill="none" stroke-width="1.2" stroke-linecap="round"><path d="M6 13H88M132 13H214"/><path d="M96 13c6-9 12-9 14 0 2-9 8-9 14 0-6 9-12 9-14 0-2 9-8 9-14 0z" fill="#efe6cf" stroke="#b08d57"/></g><circle cx="92" cy="13" r="2" fill="#b08d57"/><circle cx="128" cy="13" r="2" fill="#b08d57"/></svg>';
   document.querySelectorAll(".line").forEach(el => el.innerHTML = FL);
   const hero = document.querySelector(".hero");
   for (let i = 0; i < 16; i++) { const st = document.createElement("i"); st.className = "star"; st.style.cssText = "left:" + Math.random()*96 + "%;top:" + Math.random()*96 + "%;animation-delay:" + Math.random()*3 + "s"; hero.append(st); }
@@ -364,11 +383,54 @@ const Music = (() => {
 })();
 $("mbtn").onclick = () => Music.toggle();
 
+/* ---- Салют из золотых блёсток ---- */
+function burst(){
+  if (matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const cv = document.createElement("canvas");
+  cv.style.cssText = "position:fixed;inset:0;z-index:60;pointer-events:none";
+  document.body.append(cv);
+  const W = cv.width = innerWidth, H = cv.height = innerHeight, cx = cv.getContext("2d");
+  const cols = ["#d9b970","#b08d57","#e9b8c0","#fff3d6"];
+  const P = Array.from({length: 110}, () => ({x: W/2, y: H*.5, vx: (Math.random()-.5)*15, vy: -Math.random()*15 - 3, r: 2 + Math.random()*3.5, c: cols[Math.random()*4|0], a: 1, rot: Math.random()*6}));
+  let f = 0;
+  (function loop(){
+    cx.clearRect(0, 0, W, H);
+    P.forEach(p => {
+      p.vy += .27; p.x += p.vx; p.y += p.vy; p.vx *= .99; p.a -= .007; p.rot += .12;
+      if (p.a <= 0) return;
+      cx.globalAlpha = p.a; cx.fillStyle = p.c; cx.save(); cx.translate(p.x, p.y); cx.rotate(p.rot);
+      cx.fillRect(-p.r, -p.r/2, p.r*2, p.r); cx.restore();
+    });
+    if (++f < 170) requestAnimationFrame(loop); else cv.remove();
+  })();
+}
+
+/* ---- Автопрокрутка ---- */
+const Auto = (() => {
+  let on = false, y = 0, t0 = 0, raf = 0;
+  const maxY = () => document.documentElement.scrollHeight - innerHeight;
+  function frame(t){
+    if (!on) return;
+    y += (t - t0) / 1000 * CONFIG.scrollSpeed; t0 = t;
+    window.scrollTo({top: y, behavior: "instant"});
+    if (y >= maxY()) return stop();
+    raf = requestAnimationFrame(frame);
+  }
+  function start(){ if (on) return; on = true; y = window.scrollY; t0 = performance.now(); $("sbtn").textContent = "⏸"; raf = requestAnimationFrame(frame); }
+  function stop(){ on = false; cancelAnimationFrame(raf); $("sbtn").textContent = "⇣"; }
+  // любое касание, колесо или клавиша — останавливают прокрутку
+  ["wheel","touchstart","mousedown","keydown"].forEach(ev => addEventListener(ev, e => { if (on && e.target.id !== "sbtn") stop(); }, {passive: true}));
+  $("sbtn").onclick = () => on ? stop() : (y >= maxY() && window.scrollTo({top: 0, behavior: "instant"}), start());
+  return {start, stop};
+})();
+
 /* ---- Открытие конверта ---- */
 $("openBtn").onclick = () => {
   $("envelope").classList.add("gone");
   document.body.classList.add("open");
   Music.start();
+  burst();
+  if (CONFIG.autoScroll) setTimeout(() => Auto.start(), 6500);   // начнёт после появления имён
 };
 
 /* ---- Анкета гостя ---- */
