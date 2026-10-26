@@ -58,7 +58,9 @@ h2{font-weight:700;font-size:36px;line-height:1.2;margin:0 0 16px}
 .branch.l{left:-8px}.branch.r{right:-8px;transform:scaleX(-1);animation-name:swayr}
 @keyframes sway{50%{transform:rotate(4deg)}}
 @keyframes swayr{0%,100%{transform:scaleX(-1) rotate(0)}50%{transform:scaleX(-1) rotate(4deg)}}
-.big{font-weight:400;letter-spacing:.02em;font-size:clamp(48px,14vw,66px);line-height:1.15;margin:4px 0}
+/* Имена пар во втором блоке: всегда ОДНОЙ строкой (размер подгоняется под ширину экрана скриптом fitText) */
+.big{font-weight:400;letter-spacing:.02em;font-size:clamp(34px,10.5vw,62px);line-height:1.2;margin:4px 0;white-space:nowrap}
+.fitl{display:block;white-space:nowrap}
 .prog{max-width:420px;margin:26px auto 0;text-align:left;position:relative;padding-left:26px;border-left:2px solid var(--gold)}
 .prog div{position:relative;margin-bottom:22px}
 .prog div::before{content:"";position:absolute;left:-35px;top:12px;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(176,141,87,.25)}
@@ -203,7 +205,6 @@ const CONFIG = {
   couples: [
     { groom: "Асан",bride: "Айназик" },
 
-
     { groom: "Үсөн", bride: "Гүлнур" }
   ],
   hosts: "Азимбек & Гулбахар",              // той ээлери (хозяева тоя)
@@ -267,7 +268,8 @@ function fill(){
   const c = CONFIG, d = new Date(c.date), hm = d.toTimeString().slice(0,5);
   const pairs = c.couples.map(p => p.groom + " & " + p.bride);
   document.title = pairs.join(" · ");
-  $("introNames").innerHTML = pairs.join('<br><span style="font-size:.6em">✦</span><br>');
+  // каждая пара — отдельная строка, которая не переносится (размер подгоняется в fitText)
+  $("introNames").innerHTML = pairs.map(p => '<span class="fitl">' + p + '</span>').join('<span style="display:block;font-size:.6em">✦</span>');
   $("kicker").textContent = "Үйлөнүү тоюна чакыруу";
   $("dateShort").textContent = d.toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric"}) + " · " + hm;
   $("greet").textContent = c.greet;
@@ -304,6 +306,16 @@ function fill(){
   document.querySelectorAll(".line").forEach(el => el.innerHTML = FL);
   const hero = document.querySelector(".hero");
   for (let i = 0; i < 16; i++) { const st = document.createElement("i"); st.className = "star"; st.style.cssText = "left:" + Math.random()*96 + "%;top:" + Math.random()*96 + "%;animation-delay:" + Math.random()*3 + "s"; hero.append(st); }
+}
+
+/* ---- Подгонка имён под ширину экрана: каждая пара всегда в ОДНУ строку ---- */
+function fitText(){
+  document.querySelectorAll(".big,.fitl").forEach(el => {
+    el.style.fontSize = "";                                   // сначала обычный размер из стилей
+    const limit = el.classList.contains("big") ? el.parentElement.clientWidth : innerWidth - 40;
+    let size = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > limit && size > 18) { size -= 1; el.style.fontSize = size + "px"; }
+  });
 }
 
 /* ---- Таймер ---- */
@@ -456,7 +468,9 @@ $("send").onclick = () => {
   $("send").style.display = "none";
 };
 
-fill(); tick(); setInterval(tick, 1000);
+fill(); fitText(); tick(); setInterval(tick, 1000);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitText);   // пересчёт, когда шрифт загрузился
+addEventListener("resize", fitText);
 </script>
 </body>
 </html>
