@@ -202,6 +202,8 @@ const CONFIG = {
      Если пар две — две строки (как сейчас). Можно добавить и третью.     */
   couples: [
     { groom: "Асан",bride: "Айназик" },
+
+
     { groom: "Үсөн", bride: "Гүлнур" }
   ],
   hosts: "Азимбек & Гулбахар",              // той ээлери (хозяева тоя)
@@ -271,7 +273,7 @@ function fill(){
   $("greet").textContent = c.greet;
   $("intro").textContent = c.intro;
   $("hosts").textContent = c.hosts;
-  $("dateLong").textContent = d.getFullYear() + "-жылдын " + d.getDate() + "-" + MONTHS[d.getMonth()] + "ында, саат " + hm + "де башталат";
+  $("dateLong").textContent = d.getFullYear() + "-жыл, " + d.getDate() + "-" + MONTHS[d.getMonth()] + ", саат " + hm + "дө башталат";
   $("venue").textContent = c.venue;
   $("map").href = c.mapUrl;
   $("monthName").textContent = MONTHS[d.getMonth()];
