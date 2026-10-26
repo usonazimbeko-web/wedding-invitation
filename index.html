@@ -226,7 +226,7 @@ const CONFIG = {
 
   /* --- Тексты (можно оставить как есть) --- */
   greet: "Урматтуу биздин сыйлуу коногубуз!",
-  intro: "Сиздерди балдарыбыз жаңы үй-бүлө курган тоюбузга күбө болуп, каалоо айтып, кадырлуу коногубуз болуп кетүүгө чакырабыз!",
+  intro: "Сиздерди балдарыбыздын үйлөнүү тоюна күбө болуп, ак баталарыңызды берип, кадырлуу коногубуз болуп кетүүгө чакырабыз!",
 
   /* --- Куда приходят ответы гостей ---
      Способ А (самый простой): WhatsApp. Впишите свой номер БЕЗ плюса,
@@ -271,7 +271,7 @@ function fill(){
   $("greet").textContent = c.greet;
   $("intro").textContent = c.intro;
   $("hosts").textContent = c.hosts;
-  $("dateLong").textContent = d.getFullYear() + "-жылдын " + d.getDate() + "-" + MONTHS[d.getMonth()] + "ында, саат " + hm + "дө башталат";
+  $("dateLong").textContent = d.getFullYear() + "-жылдын " + d.getDate() + "-" + MONTHS[d.getMonth()] + "ында, саат " + hm + "де башталат";
   $("venue").textContent = c.venue;
   $("map").href = c.mapUrl;
   $("monthName").textContent = MONTHS[d.getMonth()];
